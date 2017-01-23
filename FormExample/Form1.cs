@@ -17,6 +17,7 @@ namespace FormExample
         int margin = 10;
         int row = -1;
         int col = -1;
+        string help = "Press ESC to close the game./Press H for the help menu.";
         SoundPlayer sound = new SoundPlayer(FormExample.Properties.Resources.Music);
 
         int[][] board = new int[3][] { new int[3] { 0, 0, 0 }, new int[3] { 0, 0, 0 }, new int[3] { 0, 0, 0 } };
@@ -27,6 +28,8 @@ namespace FormExample
             InitializeComponent();
             DoubleBuffered = true;
             UpdateSize();
+            help = help.Replace("/", System.Environment.NewLine);
+            MessageBox.Show(help);
             NewGame();
             sound.PlayLooping();
         }
@@ -113,6 +116,22 @@ namespace FormExample
                 }
             }
             return true;
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Escape)
+            {
+                if(MessageBox.Show("Are you sure you want to close?", "Close Application", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+            }
+            if(e.KeyCode == Keys.H)
+            {
+                help = help.Replace("/", System.Environment.NewLine);
+                MessageBox.Show(help);
+            }
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
